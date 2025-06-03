@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +28,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     // Authentication routes
-    Route::get('/auth/me',          [AuthController::class, 'me'])->name('api.auth.me');
+    Route::get('/users/me',         [AuthController::class, 'me'])->name('api.auth.me');
     Route::post('/auth/logout',     [AuthController::class, 'logout'])->name('api.auth.logout');
     Route::post('/auth/refresh',    [AuthController::class, 'refresh'])->name('api.auth.refresh');
 

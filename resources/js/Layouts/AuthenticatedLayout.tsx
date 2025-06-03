@@ -36,14 +36,6 @@ export default function Authenticated({
   };
 
   const AppSidebar = () => {
-    const items = [
-      {
-        title: "Account",
-        url: route("profile"),
-        icon: Inbox,
-      },
-    ];
-
     return (
       <Sidebar>
         <SidebarHeader />
@@ -52,16 +44,6 @@ export default function Authenticated({
             <SidebarGroupLabel>Account Management</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {items.map((item) => (
-                  <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <Button
@@ -72,7 +54,7 @@ export default function Authenticated({
                       onClick={handleLogout}
                     >
                       <LogOut />
-                      <span>Log Out</span>
+                      <span className="font-normal">Log out</span>
                     </Button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

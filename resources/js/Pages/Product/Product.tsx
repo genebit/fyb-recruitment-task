@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import PrivateRoute from "@/Routes/PrivateRoute";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-import { columns, Payment } from "./Components/ProductColumns";
+import * as ProductColumns from "./Components/ProductColumns";
 import { ProductDataTable } from "./Components/ProductDataTable";
 import PulseLoader from "@/components/ui/pulse-loader";
 import {
@@ -20,24 +20,35 @@ import {
 } from "@/components/ui/sheet";
 import { Head } from "@inertiajs/react";
 
-async function getData(): Promise<Payment[]> {
-  return [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-  ];
+async function getData(token: string): Promise<ProductColumns.Product[]> {
+  try {
+    const response = await fetch(route("api.product"), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) throw new Error("Failed to fetch products");
+
+    const data = await response.json();
+
+    return data; // return the fetched data
+  } catch (error) {
+    alert("Failed to fetch products. Please try again later.");
+    return []; // return empty array on error to satisfy return type
+  }
 }
 
 export default function Product() {
   const { user, loading } = useAuth();
-  const [data, setData] = useState<Payment[]>([]);
+  const [data, setData] = useState<ProductColumns.Product[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    getData().then((payments) => {
+    const token = localStorage.getItem("auth_token") || "";
+
+    getData(token).then((payments) => {
       setData(payments);
       setDataLoading(false);
     });
@@ -74,7 +85,7 @@ export default function Product() {
             </SheetContent>
           </Sheet>
         </header>
-        <ProductDataTable columns={columns} data={data} />
+        <ProductDataTable columns={ProductColumns.columns} data={data} />
       </AuthenticatedLayout>
     </PrivateRoute>
   );
