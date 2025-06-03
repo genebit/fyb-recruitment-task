@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import axios from "axios";
 import GuestRoute from "@/Routes/GuestRoute";
 
@@ -25,6 +25,7 @@ export default function Login() {
 
   return (
     <GuestRoute>
+      <Head title="Login" />
       <form onSubmit={handleSubmit}>
         <input
           value={email}

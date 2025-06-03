@@ -33,10 +33,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/auth/logout',     [AuthController::class, 'logout'])->name('api.auth.logout');
     Route::post('/auth/refresh',    [AuthController::class, 'refresh'])->name('api.auth.refresh');
 
-    // Profile routes
-    Route::patch('/users/me',       [ProfileController::class, 'update'])->name('api.profile.update');
-    Route::delete('/users/me',      [ProfileController::class, 'destroy'])->name('api.profile.destroy');
-
     // Product routes
     Route::get('/products',         [ProductController::class, 'list'])->name('api.product');
     Route::post('/products',        [ProductController::class, 'store'])->name('api.product.store');

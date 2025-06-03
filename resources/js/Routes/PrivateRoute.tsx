@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { router } from "@inertiajs/react";
 import useAuth from "@/hooks/useAuth";
+import { Circle } from "lucide-react";
+import PulseLoader from "@/components/ui/pulse-loader";
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +18,7 @@ export default function PrivateRoute({ children }: Props) {
     }
   }, [loading, user]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <PulseLoader />;
 
   return user ? <>{children}</> : null;
 }

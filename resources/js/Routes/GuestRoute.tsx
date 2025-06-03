@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { router } from "@inertiajs/react";
 import useAuth from "@/hooks/useAuth";
+import PulseLoader from "@/components/ui/pulse-loader";
 
 interface GuestRouteProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ export default function GuestRoute({ children }: GuestRouteProps) {
     }
   }, [loading, user]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <PulseLoader />;
 
   // Render children only if no user (guest)
   return !user ? <>{children}</> : null;

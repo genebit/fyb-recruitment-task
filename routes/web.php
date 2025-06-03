@@ -21,5 +21,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',                 [LoginController::class, 'index'])->name('home');
 Route::get('/auth/login',       [LoginController::class, 'index'])->name('auth.login');
 Route::get('/auth/register',    [RegisterController::class, 'index'])->name('auth.register');
-Route::get('/users/me',         [ProfileController::class, 'edit'])->name('profile.edit');
+Route::get('/users/me',         [ProfileController::class, 'edit'])->name('profile');
 Route::get('/products',         [ProductController::class, 'index'])->name('product');
