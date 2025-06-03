@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->dateTime('date_created');
-            $table->boolean('active');
+            $table->decimal('price', 10, 2);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
