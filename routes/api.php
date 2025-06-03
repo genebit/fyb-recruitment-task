@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +27,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/auth/login',      [AuthController::class, 'login'])->name('api.auth.login');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('jwt.auth')->group(function () {
     // Authentication routes
     Route::post('/auth/logout',     [AuthController::class, 'logout'])
         ->middleware('auth:api')

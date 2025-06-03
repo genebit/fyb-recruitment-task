@@ -29,7 +29,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'type'  => 'bearer'
             ],
-        ]);
+        ])->cookie('token', $token, 60 * 24 * 7, '/', null, false, false);
     }
 
     public function login(LoginRequest $request)
@@ -54,7 +54,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'type'  => 'bearer'
             ]
-        ]);
+        ])->cookie('token', $token, 60 * 24 * 7, '/', null, false, false);
     }
 
     public function logout()
@@ -76,6 +76,6 @@ class AuthController extends Controller
                 'token' => Auth::refresh(),
                 'type'  => 'bearer'
             ],
-        ]);
+        ])->cookie('token', '', -1);
     }
 }
