@@ -1,6 +1,4 @@
-import { FormEvent, useState } from "react";
-import { Head, router } from "@inertiajs/react";
-import axios from "axios";
+import { Head, router, useForm } from "@inertiajs/react";
 import GuestRoute from "@/Routes/GuestRoute";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Button } from "@/components/ui/button";
@@ -14,24 +12,38 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { data, setData, post, processing, errors, setError } = useForm({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await axios.post(route("api.auth.login"), {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       });
+
       localStorage.setItem("auth_token", res.data.access_token);
-      router.visit(route("product"));
-    } catch (err) {
-      setError("Invalid email or password");
+
+      // Redirect on success
+      window.location.href = route("product");
+    } catch (error: any) {
+      if (error.response && error.response.status === 422) {
+        // Laravel validation errors come here
+        setError(error.response.data.errors);
+      } else {
+        // Handle other errors (optional)
+        setError({
+          email: "Unexpected error occurred. Please try again.",
+          password: "",
+        });
+      }
     }
   };
 
@@ -55,30 +67,36 @@ export default function Login() {
                     id="email"
                     type="email"
                     placeholder="m@example.com"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    value={data.email}
+                    onChange={(e) => setData("email", e.target.value)}
+                    disabled={processing}
                   />
+                  {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                  </div>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
-                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="********"
-                    required
+                    value={data.password}
+                    onChange={(e) => setData("password", e.target.value)}
+                    disabled={processing}
                   />
+                  {errors.password && (
+                    <p className="text-sm text-red-500">{errors.password}</p>
+                  )}
                 </div>
               </div>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={processing}>
+                {processing ? "Logging in..." : "Login"}
               </Button>
               <small>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a
                   href={route("auth.register")}
                   className="font-semibold underline"

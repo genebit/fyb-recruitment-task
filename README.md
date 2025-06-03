@@ -1,66 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Product Management (Technical Assessment)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Output for the technical assessment at FYB Technologies**  
+**Developed by:** _Johcel Gene T. Bitara_
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠 Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Shadcn UI**
+- **PHP Laravel 10**
+- **Node.js**
+- **Laravel + Inertia.js (React)**
+- **Tailwind CSS**
+- **SQLite**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✅ Accomplished Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| #   | Feature Description                                                   |
+| --- | --------------------------------------------------------------------- |
+| 1   | JWT Authentication                                                    |
+| 2   | `POST /auth/register` — Register a new user                           |
+| 3   | `POST /auth/login` — Login and return JWT                             |
+| 4   | `GET /users/me` — Fetch authenticated user data                       |
+| 5   | User redirect logic based on authentication state                     |
+| 6   | `POST /products` — Store a new product                                |
+| 7   | `GET /products` — List all products (with pagination)                 |
+| 8   | `GET /products/:id` — Retrieve a single product                       |
+| 9   | `PUT /products/:id` — Update a product                                |
+| 10  | `DELETE /products/:id` — Delete a product                             |
+| 11  | JWT-based frontend authentication with protected routes               |
+| 12  | Product listing table with sorting, pagination, and filtering         |
+| 13  | Product form UI for create/edit (non-functional API integration only) |
+| 14  | Product delete button UI (non-functional API integration only)        |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ How to Run the Project
 
-## Laravel Sponsors
+#### Prerequisites:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Install PHP dependencies
+composer install
 
-### Premium Partners
+# Generate JWT secret
+php artisan key:generate
+php artisan jwt:secret
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# Install JS dependencies
+npm install
 
-## Contributing
+copy .env.example .env
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Run database migrations
+php artisan migrate
+```
 
-## Code of Conduct
+#### Running the Application Localy
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# Start the Laravel backend server
+php artisan serve
 
-## Security Vulnerabilities
+# Start the Vite dev server
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🌱 Seeding
 
-## License
+Run the following command to populate the products table.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan db:seed
+```
+
+## 🐋 Running with Docker
+
+```bash
+# Make sure to have the .env already copied to the working dir.
+# copy .env.example .env
+docker build -t product-mgt-exam:latest .
+```

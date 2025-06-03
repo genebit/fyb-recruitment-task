@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 
 interface AuthenticatedLayoutProps {
   user: User;
@@ -45,9 +46,23 @@ export default function Authenticated({
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
+                  <div className="flex gap-2">
+                    <span className="flex items-center justify-center text-white uppercase rounded-full w-9 h-9 bg-primary">
+                      {user.name
+                        ? user.name.charAt(0) +
+                          user.name.charAt(user.name.length - 1)
+                        : ""}
+                    </span>
+                    <div>
+                      <h4 className="font-bold">{user.name}</h4>
+                      <small className="opacity-75">Administrator</small>
+                    </div>
+                  </div>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <Button
-                      className="justify-start"
+                      className="justify-start mt-3"
                       size={"sm"}
                       variant={"outline"}
                       role="button"
