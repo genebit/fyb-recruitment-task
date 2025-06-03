@@ -12,10 +12,6 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        if (!$request->bearerToken() && $request->cookie('token')) {
-            $request->headers->set('Authorization', 'Bearer ' . $request->cookie('token'));
-        }
-
         return $request->expectsJson() ? null : route('auth.login');
     }
 }

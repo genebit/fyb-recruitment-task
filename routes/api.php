@@ -23,18 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('guest')->group(function () {
     // Authentication routes
-    Route::post('/auth/register',   [AuthController::class, 'register'])->name('api.auth.register');
     Route::post('/auth/login',      [AuthController::class, 'login'])->name('api.auth.login');
+    Route::post('/auth/register',   [AuthController::class, 'register'])->name('api.auth.register');
 });
 
-Route::middleware('jwt.auth')->group(function () {
+Route::middleware('auth:api')->group(function () {
     // Authentication routes
-    Route::post('/auth/logout',     [AuthController::class, 'logout'])
-        ->middleware('auth:api')
-        ->name('api.auth.logout');
-    Route::post('/auth/refresh',    [AuthController::class, 'refresh'])
-        ->middleware('auth:api')
-        ->name('api.auth.refresh');
+    Route::get('/auth/me',          [AuthController::class, 'me'])->name('api.auth.me');
+    Route::post('/auth/logout',     [AuthController::class, 'logout'])->name('api.auth.logout');
+    Route::post('/auth/refresh',    [AuthController::class, 'refresh'])->name('api.auth.refresh');
 
     // Profile routes
     Route::patch('/users/me',       [ProfileController::class, 'update'])->name('api.profile.update');

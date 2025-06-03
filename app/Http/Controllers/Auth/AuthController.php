@@ -21,61 +21,42 @@ class AuthController extends Controller
 
         $token = Auth::login($user);
 
-        return response()->json([
-            'status'    => 'success',
-            'message'   => 'User created.',
-            'user'      => $user,
-            'authorization' => [
-                'token' => $token,
-                'type'  => 'bearer'
-            ],
-        ])->cookie('token', $token, 60 * 24 * 7, '/', null, false, false);
+        return $this->respondWithToken($token);
     }
 
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
-        $token = Auth::attempt($credentials);
-
-        if (!$token) {
-            return response()->json([
-                'status'    => 'error',
-                'message'   => 'Unauthorized'
-            ], 401);
+        if (! $token = Auth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $user = Auth::user();
+        return $this->respondWithToken($token);
+    }
 
-        return response()->json([
-            'status' => 'success',
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type'  => 'bearer'
-            ]
-        ])->cookie('token', $token, 60 * 24 * 7, '/', null, false, false);
+    public function me()
+    {
+        return response()->json(Auth::user());
     }
 
     public function logout()
     {
         Auth::logout();
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'User logged out successfully.'
-        ]);
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     public function refresh()
     {
+        return $this->respondWithToken(Auth::refresh());
+    }
+
+    protected function respondWithToken($token)
+    {
         return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
-            'authorization' => [
-                'token' => Auth::refresh(),
-                'type'  => 'bearer'
-            ],
-        ])->cookie('token', '', -1);
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => Auth::factory()->getTTL() * 60
+        ]);
     }
 }

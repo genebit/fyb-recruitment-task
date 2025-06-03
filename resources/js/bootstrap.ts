@@ -4,11 +4,13 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
+import axios from "axios";
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+const token = localStorage.getItem("auth_token");
 
+if (token) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

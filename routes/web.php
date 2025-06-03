@@ -18,14 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',                     [LoginController::class, 'index'])->name('home');
-
-Route::middleware('guest')->group(function () {
-    Route::get('/auth/register',    [RegisterController::class, 'index'])->name('auth.register');
-    Route::get('/auth/login',       [LoginController::class, 'index'])->name('auth.login');
-});
-
-Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('/users/me',         [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/products',         [ProductController::class, 'index'])->name('product');
-});
+Route::get('/',                 [LoginController::class, 'index'])->name('home');
+Route::get('/auth/login',       [LoginController::class, 'index'])->name('auth.login');
+Route::get('/auth/register',    [RegisterController::class, 'index'])->name('auth.register');
+Route::get('/users/me',         [ProfileController::class, 'edit'])->name('profile.edit');
+Route::get('/products',         [ProductController::class, 'index'])->name('product');
