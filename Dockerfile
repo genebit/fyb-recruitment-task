@@ -35,11 +35,6 @@ COPY .env.example .env
 RUN mkdir -p database \
     && touch database/database.sqlite
 
-# Setup configs
-RUN php artisan key:generate \
-    && php artisan jwt:secret \
-    && php artisan migrate
-
 # Install frontend dependencies and build assets
 RUN npm run build
 
@@ -51,4 +46,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 EXPOSE 8000
 
 # Start PHP built-in server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["bash", "-c", "php artisan key:generate --force && php artisan jwt:secret --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
