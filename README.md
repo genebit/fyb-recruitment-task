@@ -11,6 +11,7 @@
 - **PHP Laravel 10**
 - **Node.js**
 - **Laravel + Inertia.js (React)**
+- **Typescript**
 - **Tailwind CSS**
 - **SQLite**
 
