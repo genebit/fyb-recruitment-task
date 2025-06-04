@@ -46,14 +46,14 @@
 # Install PHP dependencies
 composer install
 
-# Generate JWT secret
-php artisan key:generate
-php artisan jwt:secret
-
 # Install JS dependencies
 npm install
 
 copy .env.example .env
+
+# Generate JWT secret
+php artisan key:generate
+php artisan jwt:secret
 
 # Run database migrations
 php artisan migrate
@@ -83,4 +83,7 @@ php artisan db:seed
 # Make sure to have the .env already copied to the working dir.
 # copy .env.example .env
 docker build -t product-mgt-exam:latest .
+docker compose up -d
+
+# Access the website through http://localhost:8000
 ```
