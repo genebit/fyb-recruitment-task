@@ -18,7 +18,9 @@ import {
   SheetDescription,
   Sheet,
 } from "@/components/ui/sheet";
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
 
 async function getData(token: string): Promise<ProductColumns.Product[]> {
   try {
@@ -43,6 +45,7 @@ async function getData(token: string): Promise<ProductColumns.Product[]> {
 export default function Product() {
   const { user, loading } = useAuth();
   const [data, setData] = useState<ProductColumns.Product[]>([]);
+  const { data, setData, processing, errors, setError } = useForm({});
   const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
@@ -55,6 +58,13 @@ export default function Product() {
   }, []);
 
   if (loading || dataLoading) return <PulseLoader />;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    // For example, you can send the data to your API
+    console.log("Form submitted with data:", data);
+  };
 
   return (
     <PrivateRoute>
@@ -76,11 +86,41 @@ export default function Product() {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Are you absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
+                <SheetTitle>Create Product</SheetTitle>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="flex flex-col gap-6">
+                    <div className="grid gap-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        value={data.email}
+                        onChange={(e) => setData("email", e.target.value)}
+                        disabled={processing}
+                      />
+                      {errors.email && (
+                        <p className="text-sm text-red-500">{errors.email}</p>
+                      )}
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="********"
+                        value={data.password}
+                        onChange={(e) => setData("password", e.target.value)}
+                        disabled={processing}
+                      />
+                      {errors.password && (
+                        <p className="text-sm text-red-500">
+                          {errors.password}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </form>
               </SheetHeader>
             </SheetContent>
           </Sheet>
