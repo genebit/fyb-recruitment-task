@@ -12,9 +12,6 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   const hasRedirected = useRef(false);
 
   useEffect(() => {
-    console.log("====================================");
-    console.log(user, loading);
-    console.log("====================================");
     if (!loading && !user && !hasRedirected.current) {
       hasRedirected.current = true;
       logout();

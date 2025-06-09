@@ -9,6 +9,8 @@ import ProductTable from "./Components/ProductTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import ProductSheet from "./Components/ProductSheet";
+import { ProductSheetType } from "./types/ProductSheetType";
 
 export default function Product() {
   return (
@@ -27,10 +29,12 @@ export default function Product() {
                   row.
                 </p>
               </div>
-              <Button>
-                <Plus />
-                Create Product
-              </Button>
+              <ProductSheet type={ProductSheetType.Create}>
+                <Button type="button">
+                  <Plus />
+                  Create Product
+                </Button>
+              </ProductSheet>
             </header>
             <ProductTable />
           </CardContent>

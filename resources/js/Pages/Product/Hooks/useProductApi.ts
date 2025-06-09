@@ -19,7 +19,7 @@ export const useProductApi = (token: string) => {
       if (!response.ok) throw new Error("Failed to fetch products");
 
       const data = await response.json();
-      return data as ProductColumns.Product[];
+      return data.info as ProductColumns.Product[];
     } catch (error) {
       toast("Failed to fetch products.", {
         description: "There are no products listed under this account.",
@@ -53,8 +53,61 @@ export const useProductApi = (token: string) => {
     [token]
   );
 
+  const updateProduct = useCallback(
+    async (productData: any): Promise<void> => {
+      try {
+        await axios.put(route("api.product.update"), productData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error: any) {
+        if (error.response) {
+          if (error.response.status === 422) {
+            const errors = error.response.info.errors;
+            console.error("Validation errors:", errors);
+            throw errors; // Let caller handle
+          } else {
+            console.error("Server error:", error.response.info);
+          }
+        } else {
+          console.error("Network error:", error);
+        }
+      }
+    },
+    [token]
+  );
+
+  const deleteProduct = useCallback(
+    async (productId: number): Promise<void> => {
+      try {
+        await axios.delete(route("api.product.delete"), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: { productId },
+        });
+      } catch (error: any) {
+        if (error.response) {
+          if (error.response.status === 422) {
+            const errors = error.response.info.errors;
+            console.error("Validation errors:", errors);
+            throw errors; // Let caller handle
+          } else {
+            console.error("Server error:", error.response.info);
+          }
+        } else {
+          console.error("Network error:", error);
+        }
+      }
+    },
+    [token]
+  );
+
   return {
     getProducts,
     createProduct,
+    deleteProduct,
+    updateProduct,
   };
 };

@@ -15,41 +15,38 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Register() {
-  const [viewPassword, setViewPassword] = useState(false);
-  const { data, setData, processing, errors, setError } = useForm({
+  const formData = {
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
-  });
+  };
+
+  const [viewPassword, setViewPassword] = useState(false);
+  const { data, setData, processing, errors, setError } = useForm(formData);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(route("api.auth.register"), {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        password_confirmation: data.password_confirmation,
-      });
+      const res = await axios.post(route("api.auth.register"), data);
 
       localStorage.setItem("auth_token", res.data.access_token);
 
       // Redirect on success
-      window.location.href = route("product");
+      router.visit(route("product"));
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
+        toast("Invalid credentials were sent.", {
+          description: "Please fill in all the required fields in the form.",
+        });
         setError(error.response.data.errors);
       } else {
-        setError({
-          name: "Unexpected error occurred. Please try again.",
-          email: "",
-          password: "",
-          password_confirmation: "",
-        });
+        toast(error.response.data.message);
+        setError(formData);
       }
     }
   };

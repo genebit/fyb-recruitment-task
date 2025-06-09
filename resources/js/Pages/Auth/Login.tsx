@@ -18,20 +18,19 @@ import { Eye, EyeClosed } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Login() {
-  const [viewPassword, setViewPassword] = useState(false);
-  const { data, setData, processing, errors, setError } = useForm({
+  const formData = {
     email: "",
     password: "",
-  });
+  };
+
+  const [viewPassword, setViewPassword] = useState(false);
+  const { data, setData, processing, errors, setError } = useForm(formData);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(route("api.auth.login"), {
-        email: data.email,
-        password: data.password,
-      });
+      const res = await axios.post(route("api.auth.login"), data);
 
       const token = res.data.info.original.access_token;
       localStorage.setItem("auth_token", token);
@@ -46,10 +45,7 @@ export default function Login() {
         setError(error.response.data.errors);
       } else {
         toast(error.response.data.message);
-        setError({
-          email: "",
-          password: "",
-        });
+        setError(formData);
       }
     }
   };

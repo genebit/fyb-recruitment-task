@@ -1,6 +1,5 @@
-import { useState, PropsWithChildren, ReactNode, useEffect } from "react";
-import { Link, router } from "@inertiajs/react";
-import User from "@/interfaces/User";
+import { ReactNode } from "react";
+import { router } from "@inertiajs/react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,18 +14,14 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { Toaster } from "@/components/ui/sonner";
 import PulseLoader from "@/components/ui/pulse-loader";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ModeToggle } from "@/components/ui/theme-toggle";
+import { toast } from "sonner";
 
 type AuthenticatedProps = {
   children: ReactNode;
@@ -43,7 +38,12 @@ export default function Authenticated({ children }: AuthenticatedProps) {
     e.preventDefault();
 
     logout();
-    router.visit(route("auth.login"));
+
+    toast("User has been logged out, redirecting to login page.");
+
+    setTimeout(() => {
+      router.visit(route("auth.login"));
+    }, 1000);
   };
 
   const AppSidebar = () => {
@@ -126,6 +126,66 @@ export default function Authenticated({ children }: AuthenticatedProps) {
     );
   };
 
+  const Breadcrumb = () => {
+    // NOTE: temporary for this demo.
+    return (
+      <nav aria-label="breadcrumb" data-slot="breadcrumb">
+        <ol
+          data-slot="breadcrumb-list"
+          className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5"
+        >
+          <li
+            data-slot="breadcrumb-item"
+            className="items-center gap-1.5 hidden md:block"
+          >
+            <a
+              data-slot="breadcrumb-link"
+              className="transition-colors hover:text-foreground"
+              href="#"
+            >
+              Management
+            </a>
+          </li>
+          <li
+            data-slot="breadcrumb-separator"
+            role="presentation"
+            aria-hidden="true"
+            className="[&amp;>svg]:size-3.5 hidden md:block"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-chevron-right"
+            >
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </li>
+          <li
+            data-slot="breadcrumb-item"
+            className="inline-flex items-center gap-1.5"
+          >
+            <span
+              data-slot="breadcrumb-page"
+              role="link"
+              aria-disabled="true"
+              aria-current="page"
+              className="font-normal text-foreground"
+            >
+              My Products
+            </span>
+          </li>
+        </ol>
+      </nav>
+    );
+  };
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -134,60 +194,7 @@ export default function Authenticated({ children }: AuthenticatedProps) {
           <div className="flex items-center gap-3">
             <SidebarTrigger />
             <span className="scale-75">|</span>
-            <nav aria-label="breadcrumb" data-slot="breadcrumb">
-              <ol
-                data-slot="breadcrumb-list"
-                className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5"
-              >
-                <li
-                  data-slot="breadcrumb-item"
-                  className="items-center gap-1.5 hidden md:block"
-                >
-                  <a
-                    data-slot="breadcrumb-link"
-                    className="transition-colors hover:text-foreground"
-                    href="#"
-                  >
-                    Management
-                  </a>
-                </li>
-                <li
-                  data-slot="breadcrumb-separator"
-                  role="presentation"
-                  aria-hidden="true"
-                  className="[&amp;>svg]:size-3.5 hidden md:block"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-chevron-right"
-                  >
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </li>
-                <li
-                  data-slot="breadcrumb-item"
-                  className="inline-flex items-center gap-1.5"
-                >
-                  <span
-                    data-slot="breadcrumb-page"
-                    role="link"
-                    aria-disabled="true"
-                    aria-current="page"
-                    className="font-normal text-foreground"
-                  >
-                    My Products
-                  </span>
-                </li>
-              </ol>
-            </nav>
+            <Breadcrumb />
           </div>
           <ModeToggle />
         </div>
@@ -229,7 +236,7 @@ export default function Authenticated({ children }: AuthenticatedProps) {
           </header>
           {children}
         </article>
-        <Toaster />
+        <Toaster position="bottom-left" />
       </main>
     </SidebarProvider>
   );

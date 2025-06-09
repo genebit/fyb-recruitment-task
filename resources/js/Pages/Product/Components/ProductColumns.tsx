@@ -9,11 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ProductModalDelete from "./ProductModalDelete";
+import ProductSheet from "./ProductSheet";
+import { ProductSheetType } from "../types/ProductSheetType";
+import { useState } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Product = {
-  id: number;
+  product_id: number;
   name: string;
   description: string;
   quantity: number;
@@ -21,6 +25,13 @@ export type Product = {
 };
 
 export const columns: ColumnDef<Product>[] = [
+  {
+    accessorKey: "product_id",
+    header: () => null, // no header
+    cell: () => null, // hide the cell
+    enableSorting: false,
+    enableColumnFilter: false,
+  },
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -94,8 +105,11 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const [open, setOpen] = useState(false);
+      const closeDropdown = () => setOpen(false);
+
       return (
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-8 h-8 p-0">
               <span className="sr-only">Open menu</span>
@@ -105,8 +119,19 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Update</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <ProductSheet
+                type={ProductSheetType.Update}
+                productId={row.getValue("product_id")}
+              >
+                <Button variant="ghost" className="justify-start w-full px-2">
+                  Update
+                </Button>
+              </ProductSheet>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <ProductModalDelete productId={row.getValue("product_id")} />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
