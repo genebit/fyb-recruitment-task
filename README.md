@@ -18,7 +18,7 @@
 
 Collapse to view.
 
-<details>
+<details open>
 
 ![image](public/snapshots/Frame%204.png)
 ![image](public/snapshots/Frame%205.png)
