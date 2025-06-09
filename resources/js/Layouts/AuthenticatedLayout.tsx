@@ -18,6 +18,7 @@ import {
 import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
+import { Toaster } from "@/components/ui/sonner";
 
 interface AuthenticatedLayoutProps {
   user: User;
@@ -89,6 +90,7 @@ export default function Authenticated({
         <SidebarTrigger />
         <hr />
         <article className="p-5">{children}</article>
+        <Toaster />
       </main>
     </SidebarProvider>
   );
