@@ -1,12 +1,10 @@
 import { useCallback } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import * as ProductColumns from "../Components/ProductColumns";
+import { ProductType } from "../types/ProductType";
 
 export const useProductApi = (token: string) => {
-  const getProducts = useCallback(async (): Promise<
-    ProductColumns.Product[]
-  > => {
+  const getProducts = useCallback(async (): Promise<ProductType[]> => {
     try {
       const response = await fetch(route("api.product"), {
         method: "GET",
@@ -19,7 +17,7 @@ export const useProductApi = (token: string) => {
       if (!response.ok) throw new Error("Failed to fetch products");
 
       const data = await response.json();
-      return data.info as ProductColumns.Product[];
+      return data.info as ProductType[];
     } catch (error) {
       toast("Failed to fetch products.", {
         description: "There are no products listed under this account.",

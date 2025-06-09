@@ -3,9 +3,10 @@ import * as ProductColumns from "./ProductColumns";
 import { ProductDataTable } from "./ProductDataTable";
 import { useProductApi } from "../Hooks/useProductApi";
 import useAuth from "@/hooks/useAuth";
+import { ProductType } from "../types/ProductType";
 
 const ProductTable = () => {
-  const [dtData, setDtData] = useState<ProductColumns.Product[]>([]);
+  const [dtData, setDtData] = useState<ProductType[]>([]);
   const { token } = useAuth();
   const { getProducts } = useProductApi(token ?? "");
 
