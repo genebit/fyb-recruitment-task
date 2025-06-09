@@ -33,10 +33,11 @@ export default function Login() {
         password: data.password,
       });
 
-      localStorage.setItem("auth_token", res.data.access_token);
+      const token = res.data.info.original.access_token;
+      localStorage.setItem("auth_token", token);
 
       // Redirect on success
-      window.location.href = route("product");
+      router.visit(route("product"));
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
         toast("Invalid credentials were sent.", {

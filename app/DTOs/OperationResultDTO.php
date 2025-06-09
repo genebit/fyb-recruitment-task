@@ -14,6 +14,6 @@ class OperationResultDTO extends Data
         // Optional error code
         public ?string $errorCode = null,
         // Accepts any type (string, array, object)
-        public mixed $data = null
+        public mixed $info = null
     ) {}
 }

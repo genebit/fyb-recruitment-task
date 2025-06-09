@@ -1,4 +1,4 @@
-import { useState, PropsWithChildren, ReactNode } from "react";
+import { useState, PropsWithChildren, ReactNode, useEffect } from "react";
 import { Link, router } from "@inertiajs/react";
 import User from "@/interfaces/User";
 import {
@@ -19,21 +19,23 @@ import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { Toaster } from "@/components/ui/sonner";
+import PulseLoader from "@/components/ui/pulse-loader";
 
-interface AuthenticatedLayoutProps {
-  user: User;
-}
+type AuthenticatedProps = {
+  children: ReactNode;
+};
 
-export default function Authenticated({
-  user,
-  children,
-}: PropsWithChildren<AuthenticatedLayoutProps>) {
+export default function Authenticated({ children }: AuthenticatedProps) {
+  const { user, loading, logout } = useAuth();
+
+  if (loading) {
+    return <PulseLoader />;
+  }
+
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    await router.post(route("api.auth.logout"));
-    localStorage.removeItem("auth_token");
-
+    logout();
     router.visit(route("auth.login"));
   };
 
@@ -49,13 +51,13 @@ export default function Authenticated({
                 <SidebarMenuItem>
                   <div className="flex gap-2">
                     <span className="flex items-center justify-center text-white uppercase rounded-full w-9 h-9 bg-primary">
-                      {user.name
-                        ? user.name.charAt(0) +
-                          user.name.charAt(user.name.length - 1)
+                      {user?.name
+                        ? user?.name.charAt(0) +
+                          user?.name.charAt(user?.name.length - 1)
                         : ""}
                     </span>
                     <div>
-                      <h4 className="font-bold">{user.name}</h4>
+                      <h4 className="font-bold">{user?.name}</h4>
                       <small className="opacity-75">Administrator</small>
                     </div>
                   </div>

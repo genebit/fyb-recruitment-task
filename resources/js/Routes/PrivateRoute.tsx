@@ -1,24 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { router } from "@inertiajs/react";
 import useAuth from "@/hooks/useAuth";
-import { Circle } from "lucide-react";
 import PulseLoader from "@/components/ui/pulse-loader";
 
-type Props = {
+type PrivateRouteProps = {
   children: React.ReactNode;
 };
 
-export default function PrivateRoute({ children }: Props) {
-  const { user, loading } = useAuth();
+export default function PrivateRoute({ children }: PrivateRouteProps) {
+  const { user, loading, logout } = useAuth();
+  const hasRedirected = useRef(false);
 
   useEffect(() => {
-    if (!loading && !user) {
-      // No user found, redirect to login
+    console.log("====================================");
+    console.log(user, loading);
+    console.log("====================================");
+    if (!loading && !user && !hasRedirected.current) {
+      hasRedirected.current = true;
+      logout();
       router.visit(route("auth.login"));
+    }
+
+    if (user) {
+      hasRedirected.current = false;
     }
   }, [loading, user]);
 
-  if (loading) return <PulseLoader />;
+  // Show loading while authenticating or redirecting
+  if (loading || (!user && !hasRedirected.current)) {
+    return <PulseLoader />;
+  }
 
+  // Only render children if user is authenticated
   return user ? <>{children}</> : null;
 }
