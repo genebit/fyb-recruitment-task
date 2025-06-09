@@ -1,14 +1,5 @@
 services:
   app:
-    container_name: product-mgt-exam
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: product-mgt-exam:latest
+    image: product-mgt-exam
     ports:
-      - "8080:80"
-    environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
-    volumes:
-      - .:/var/www/html
+      - "8080:8000"
