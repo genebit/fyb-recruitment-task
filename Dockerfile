@@ -46,4 +46,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 EXPOSE 8000
 
 # Start PHP built-in server
-CMD ["bash", "-c", "php artisan key:generate --force && php artisan jwt:secret --force && php artisan migrate --force && php artisan db:seed && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["bash", "-c", "php artisan key:generate --force && php artisan jwt:secret --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]

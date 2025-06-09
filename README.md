@@ -88,5 +88,5 @@ npm run dev
 ```bash
 docker build -t product-mgt-exam:latest .
 docker compose up -d
-# Launch the application in localhost:8000
+# Launch the application in http://localhost:8080/
 ```
