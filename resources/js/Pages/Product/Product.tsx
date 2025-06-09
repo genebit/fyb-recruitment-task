@@ -8,25 +8,33 @@ import { Head } from "@inertiajs/react";
 import ProductTable from "./Components/ProductTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Product() {
   return (
     <PrivateRoute>
       <Head title="Products" />
       <AuthenticatedLayout>
-        <header className="flex justify-between mb-3">
-          <div>
-            <h1 className="mb-2 text-5xl font-extrabold">Product Management</h1>
-            <p className="opacity-75">
-              Manage your products efficiently with ease.
-            </p>
-          </div>
-          <Button>
-            <Plus />
-            Create Product
-          </Button>
-        </header>
-        {/* <ProductTable /> */}
+        <Card className="shadow-none shadow-slate-200">
+          <CardContent className="p-5">
+            <header className="flex justify-between mb-3">
+              <div>
+                <h1 className="mb-2 text-xl font-extrabold">
+                  Product Management
+                </h1>
+                <p className="text-base text-muted-foreground">
+                  Manage your products by selecting the option icon under each
+                  row.
+                </p>
+              </div>
+              <Button>
+                <Plus />
+                Create Product
+              </Button>
+            </header>
+            <ProductTable />
+          </CardContent>
+        </Card>
       </AuthenticatedLayout>
     </PrivateRoute>
   );
