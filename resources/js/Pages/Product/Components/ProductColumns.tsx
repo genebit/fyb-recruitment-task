@@ -13,18 +13,9 @@ import ProductModalDelete from "./ProductModalDelete";
 import ProductSheet from "./ProductSheet";
 import { ProductSheetType } from "../types/ProductSheetType";
 import { useState } from "react";
+import { ProductType } from "../types/ProductType";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Product = {
-  product_id: number;
-  name: string;
-  description: string;
-  quantity: number;
-  price: number;
-};
-
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<ProductType>[] = [
   {
     accessorKey: "product_id",
     header: () => null, // no header
@@ -68,7 +59,13 @@ export const columns: ColumnDef<Product>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="px-3 py-1 font-semibold rounded-sm text-primary ms-7 bg-secondary w-max">
+        <div
+          className={`px-3 py-1 font-semibold mx-auto rounded-sm ${
+            parseInt(row.getValue("quantity")) > 0
+              ? "bg-secondary text-primary"
+              : "bg-destructive/10 text-destructive"
+          } w-max`}
+        >
           {row.getValue("quantity")}
         </div>
       );

@@ -95,10 +95,10 @@ export default function Authenticated({ children }: AuthenticatedProps) {
                       {user?.name
                         ? user?.name.charAt(0) +
                           user?.name.charAt(user?.name.length - 1)
-                        : ""}
+                        : "Guest"}
                     </span>
                     <div>
-                      <h4 className="font-bold">{user?.name}</h4>
+                      <h4 className="font-bold">{user?.name ?? "Guest"}</h4>
                       <small className="opacity-75">Administrator</small>
                     </div>
                   </div>

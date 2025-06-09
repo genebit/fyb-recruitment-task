@@ -15,6 +15,7 @@ import { Plus } from "lucide-react";
 import { ForwardedRef, forwardRef, ReactNode, useState } from "react";
 import { toast } from "sonner";
 import { ProductSheetType } from "../types/ProductSheetType";
+import { useProductContext } from "../Contexts/ProductContext";
 import axios from "axios";
 
 interface ProductSheetProps {
@@ -26,6 +27,8 @@ interface ProductSheetProps {
 const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
   (props, ref: ForwardedRef<HTMLDivElement>) => {
     const { type, productId, children } = props;
+    const { refreshProducts } = useProductContext();
+
     const formData = {
       name: "",
       description: "",
@@ -43,9 +46,9 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
         case ProductSheetType.Create:
           try {
             const res = await axios.post(route("api.product.store"), data);
-
             toast("Successfully inserted product to your list.");
             setOpen(false);
+            refreshProducts(); // Use context method
           } catch (error: any) {
             if (error.response && error.response.status === 422) {
               toast("Invalid credentials were sent.", {
@@ -66,9 +69,9 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
               route("api.product.update", { id: productId }),
               data
             );
-
             toast("Successfully updated product on your list.");
             setOpen(false);
+            refreshProducts();
           } catch (error: any) {
             if (error.response && error.response.status === 422) {
               toast("Invalid credentials were sent.", {
@@ -94,9 +97,7 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
         const res = await axios.get(
           route("api.product.find", { id: productId })
         );
-
         setData(res.data.info);
-
         toast("Successfully fetched product.");
       } catch (error: any) {
         toast(error.response ? error.response.data.message : error.message);
@@ -104,8 +105,6 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
     };
 
     const handleOpenChange = async (open: boolean) => {
-      // NOTE: handle here the fetching of records if it's updating
-      // else dont do anything.
       setOpen(open);
 
       if (productId && open) {
@@ -117,7 +116,7 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
 
     return (
       <div ref={ref}>
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        <form onSubmit={handleSubmit}>
           <Sheet open={open} onOpenChange={handleOpenChange}>
             <SheetTrigger asChild>{children}</SheetTrigger>
             <SheetContent>
@@ -129,7 +128,7 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
               </SheetHeader>
               <section className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Product Name</Label>
+                  <Label htmlFor="name">Product Name</Label>
                   <Input
                     id="name"
                     type="text"
@@ -158,7 +157,6 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
                 <div className="grid grid-cols-2 gap-2">
                   <div className="grid gap-2 h-max">
                     <Label htmlFor="quantity">Quantity</Label>
-
                     <Input
                       id="quantity"
                       type="number"
@@ -172,7 +170,7 @@ const ProductSheet = forwardRef<HTMLDivElement, ProductSheetProps>(
                     )}
                   </div>
                   <div className="grid gap-2 h-max">
-                    <Label htmlFor="quantity">Price ($)</Label>
+                    <Label htmlFor="price">Price ($)</Label>
                     <Input
                       id="price"
                       type="number"

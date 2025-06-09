@@ -12,6 +12,7 @@ import {
 import { ForwardedRef, forwardRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useProductContext } from "../Contexts/ProductContext";
 import axios from "axios";
 
 interface ProductModalDeleteProps {
@@ -21,16 +22,17 @@ interface ProductModalDeleteProps {
 const ProductModalDelete = forwardRef<HTMLDivElement, ProductModalDeleteProps>(
   (props, ref: ForwardedRef<HTMLDivElement>) => {
     const { productId } = props;
+    const { refreshProducts } = useProductContext();
     const [open, setOpen] = useState(false);
 
     const handleDelete = async () => {
       try {
         const res = await axios.delete(
-          route("api.product.delete", { productId })
+          route("api.product.delete", { id: productId })
         );
-
-        toast("Successfully deleted a product to your list.");
+        toast("Successfully deleted a product from your list.");
         setOpen(false);
+        refreshProducts(); // Use context method
       } catch (error: any) {
         toast(error.response ? error.response.data.message : error.message);
       }
@@ -59,7 +61,7 @@ const ProductModalDelete = forwardRef<HTMLDivElement, ProductModalDeleteProps>(
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDelete}
-                className="bg-destructive hover:bg-destructive/75"
+                className="bg-destructive hover:bg-destructive/75 dark:text-white"
               >
                 Continue
               </AlertDialogAction>
