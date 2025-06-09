@@ -59,7 +59,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'user_product')
+        return $this->belongsToMany(Product::class, 'user_product', 'user_id', 'product_id')
             ->withTimestamps();
     }
 }

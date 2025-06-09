@@ -13,6 +13,7 @@ class Product extends Model
 
     protected $primaryKey = 'product_id';
     protected $table = 'product';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +29,7 @@ class Product extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_product')
+        return $this->belongsToMany(User::class, 'user_product', 'product_id', 'user_id')
             ->withTimestamps();
     }
 
