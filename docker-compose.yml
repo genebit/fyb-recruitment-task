@@ -1,5 +1,5 @@
 services:
   app:
-    image: product-mgt-exam
+    image: fyb-recruitment-task
     ports:
       - "8080:8000"

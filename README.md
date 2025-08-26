@@ -86,7 +86,7 @@ npm run dev
 ## 🐋 Running with Docker
 
 ```bash
-docker build -t product-mgt-exam:latest .
+docker build -t fyb-recruitment-task:latest .
 docker compose up -d
 # Launch the application in http://localhost:8080/
 ```
